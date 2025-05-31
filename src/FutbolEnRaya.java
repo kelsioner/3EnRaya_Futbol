@@ -1,10 +1,11 @@
-import com.mongodb.client.*;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.*;
 import java.util.List;
 
 public class FutbolEnRaya extends JFrame {
@@ -93,11 +94,13 @@ public class FutbolEnRaya extends JFrame {
         if (posiciones.contains(categoria)) return true;
         if (equipos.contains(categoria)) return true;
         if (nacionalidad.equalsIgnoreCase(categoria)) return true;
+
         try {
             int edadCategoria = Integer.parseInt(categoria.replaceAll("[^0-9]", ""));
             if (categoria.contains(">")) return edad > edadCategoria;
             if (categoria.contains("<")) return edad < edadCategoria;
         } catch (Exception ignored) {}
+
         return false;
     }
 
@@ -106,8 +109,8 @@ public class FutbolEnRaya extends JFrame {
             if (tablero[i][0] != null && tablero[i][0].equals(tablero[i][1]) && tablero[i][1].equals(tablero[i][2])) return true;
             if (tablero[0][i] != null && tablero[0][i].equals(tablero[1][i]) && tablero[1][i].equals(tablero[2][i])) return true;
         }
-        return tablero[0][0] != null && tablero[0][0].equals(tablero[1][1]) && tablero[1][1].equals(tablero[2][2])
-            || tablero[0][2] != null && tablero[0][2].equals(tablero[1][1]) && tablero[1][1].equals(tablero[2][0]);
+        return tablero[0][0] != null && tablero[0][0].equals(tablero[1][1]) && tablero[1][1].equals(tablero[2][2]) ||
+               tablero[0][2] != null && tablero[0][2].equals(tablero[1][1]) && tablero[1][1].equals(tablero[2][0]);
     }
 
     private void reiniciarJuego() {
@@ -122,9 +125,9 @@ public class FutbolEnRaya extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Conexión MongoDB
-        MongoClient mongoClient = MongoClients.create("TU_URI_DE_MONGODB");
-        MongoDatabase database = mongoClient.getDatabase("futbol");
+        // Asegúrate de que MongoDB esté corriendo y que la URI sea correcta
+        MongoClient mongoClient = mongoClient.create("mongodb+srv://kelsioner:3zOSa7Jnw0iJUPY7@proyectointermodular.0czvebk.mongodb.net/?retryWrites=true&w=majority&appName=ProyectoIntermodular\r\n");
+        MongoDatabase database = mongoClient.getDatabase("futbol_en_raya");
         MongoCollection<Document> coleccion = database.getCollection("jugadores");
 
         SwingUtilities.invokeLater(() -> {
