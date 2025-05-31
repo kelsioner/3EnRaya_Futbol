@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MongoDBImporter {
+/* public class MongoDBImporter {
 
     public static void main(String[] args) {
 
@@ -94,6 +94,39 @@ public class MongoDBImporter {
             e.printStackTrace();
         } finally {
             System.out.println("DEBUG: Proceso de volcado finalizado.");
+        }
+    }
+} */
+
+
+public class MongoDBImporter {
+    public static void main(String[] args) {
+        try {
+            // Línea que se conecta a MongoDB
+            MongoClient client = MongoClients.create("mongodb+srv://kelsioner:3zOSa7Jnw0iJUPY7@proyectointermodular.0czvebk.mongodb.net/?retryWrites=true&w=majority&appName=ProyectoIntermodular\r\n");
+
+            // Se conecta a la base de datos
+            MongoDatabase database = client.getDatabase("futbol_en_raya");
+
+            // Se obtiene la colección (si no existe, MongoDB la crea al insertar)
+            MongoCollection<Document> jugadores = database.getCollection("jugadores");
+
+            // Lee el archivo JSON que contiene los jugadores
+            String json = new String(Files.readAllBytes(Paths.get("players.json")));
+
+            // Parsea el contenido como un array JSON
+            JSONArray array = new JSONArray(json);
+
+            // Inserta cada jugador como un documento en MongoDB
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject obj = array.getJSONObject(i);
+                Document doc = Document.parse(obj.toString());
+                jugadores.insertOne(doc);
+            }
+
+            System.out.println("Importación completada exitosamente.");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
