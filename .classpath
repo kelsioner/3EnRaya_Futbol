@@ -7,13 +7,9 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="lib" path="C:/Users/kelsi/git/TresEnRaya_Futbol/PROY_NunezPaula/lib/bson-5.4.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/kelsi/git/TresEnRaya_Futbol/PROY_NunezPaula/lib/json-20240303.jar"/>
-	<classpathentry kind="lib" path="C:/Users/kelsi/git/TresEnRaya_Futbol/PROY_NunezPaula/lib/mongodb-driver-core-5.4.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/kelsi/git/TresEnRaya_Futbol/PROY_NunezPaula/lib/mongodb-driver-sync-5.4.0.jar"/>
-	<classpathentry kind="lib" path="lib/bson-4.10.2.jar"/>
-	<classpathentry kind="lib" path="lib/mongodb-driver-core-4.10.2.jar"/>
-	<classpathentry kind="lib" path="lib/mongodb-driver-sync-4.10.2.jar"/>
-	<classpathentry kind="lib" path="lib/json-20240303.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kelsi/git/3EnRaya_Futbol/lib/bson-5.4.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kelsi/git/3EnRaya_Futbol/lib/json-20240303.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kelsi/git/3EnRaya_Futbol/lib/mongodb-driver-core-5.4.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kelsi/git/3EnRaya_Futbol/lib/mongodb-driver-sync-5.4.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
