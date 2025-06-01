@@ -1,71 +1,158 @@
-El objetivo de este proyecto es crear una aplicación con Java que permita jugar al juego de las tres en raya, pero de una temática concreta. En nuestro caso, todo irá relacionado con el tema del futbol, pero se puede enfocar en cualquier otro contenido que se desee.
+# ⚽ Proyecto 3EnRaya_Futbol
 
-1.	BASE DE DATOS 
-En esta aplicación trabajaremos con bases de datos no relacionales, concretamente utilizando MongoDB. Las bases de datos no relacionales, también conocidas como NoSQL, son sistemas de gestión de datos diseñados para manejar grandes volúmenes de datos de manera flexible y escalable, sin adherirse a un modelo de datos tabular como en las bases de datos relacionales. 
-Estas bases de datos permiten almacenar y recuperar datos de forma eficiente mediante estructuras como documentos, columnas o grafos, lo que las hace ideales para aplicaciones con requisitos de almacenamiento y consultas muy variados, como aplicaciones web, IoT o Big Data. 
-MongoDB es una base de datos no relacional de código abierto, orientada a documentos, diseñada para almacenar y recuperar datos de manera eficiente en entornos escalables y distribuidos. Utiliza un modelo de datos flexible basado en documentos JSON, lo que permite almacenar datos de forma similar a la estructura de objetos utilizada en muchos lenguajes de programación. Es altamente escalable y puede distribuirse en clústeres para manejar grandes volúmenes de datos y cargas de trabajo intensivas. 
-Además, ofrece una amplia gama de funcionalidades, incluyendo consultas complejas, indexación flexible, agregaciones poderosas y replicación automática para garantizar la disponibilidad y la resiliencia de los datos. 
-En la base de datos tendremos una colección Jugador donde, para cada documento, almacenaremos un jugador distinto. En este caso, tan sólo nos vamos a centrar en jugadores de la Liga Española de Futbol o LaLiga. La información se puede recopilar mediante la web de Transfermarkt.es que es una web donde se acumula además de información, diferentes estadísticas que pueden ser valiosas para almacenar y darle aún más complejidad al juego. 
-La información que como mínimo se debe almacenar de cada Jugador es la siguiente: 
-− Nombre del jugador (Un solo valor en forma de String) 
-Ejemplo: Cristiano Ronaldo 
-− Nacionalidad del jugador (Un solo valor en forma de String) 
-Ejemplo: Portugal
-− Edad del jugador (Un solo valor en forma de Integer) 
-Ejemplo: 40 
-− Posiciones o demarcación que puede ocupar (Una lista de valores String) 
-Ejemplo: [ DC, EI, ED ] 
-− Equipos en los que ha estado el jugador (Una lista de valores String) 
-Ejemplo: [ Sporting Lisboa, Manchester United, Real Madrid, Juventus, Al-Nassr ] (…) 
+---
 
-Esta información se puede sacar de la web de Transfermarkt.es que es una página web donde guarda toda la información referente al mundo del futbol, como puntuaciones, resultados, noticias sobre transferencias y calendarios y palmarés de los equipos de las ligas europeas. 
+## 🎯 Propósito y Alcance
 
-Concretamente si se quiere obtener la información referente a los equipos de la liga española. 
+Este documento ofrece una introducción de alto nivel al proyecto **3EnRaya_Futbol**, un juego de tres en raya con temática de fútbol que se integra con **MongoDB** para validar el conocimiento de los jugadores.
 
-En él se puede ver información tabulada sobre los clubs de la liga a nivel general, aunque esta información global, no nos interesa, nos interesan particularmente los jugadores de dichos equipos. 
-Para llegar a ellos, se hace pinchando en el equipo concretamente, por ejemplo, si queremos llegar hasta los jugadores del Real Madrid, pincharíamos en su nombre y nos llevaría a su información particular: 
+El sistema combina la jugabilidad tradicional del tres en raya con **trivia de fútbol**, requiriendo que los jugadores nombren futbolistas reales que coincidan con combinaciones de categorías específicas para reclamar posiciones en el tablero.
 
-Por último, como lo que queremos es la información de los jugadores, en la parte inferior tenemos una tabla con esa lista de jugadores del equipo. Tendremos que ir uno a uno recopilando la información requerida para introducirla en nuestra base de datos. 
+---
 
-La mayoría de la información está en la pestaña principal de “PERFIL” salvo la parte de la lista de equipos que habría que irse a la pestaña de “FICHAJES”. 
+## 🎮 Concepto del Juego
 
-2.	OBJETIVO 
-El tres en raya o en otros países llamado tres en línea, es un juego que comúnmente se juega con lápiz y papel entre dos jugadores. Un jugador suele marcar con una “X” y otro con un “O”, aunque hay muchas variantes. Dichas marcas se realizan en los espacios vacíos de un tablero de 3x3 de manera alterna, es decir, primero es el turno de uno y posteriormente del otro, hasta que se rellenan todos los huecos o se obtiene el ganador.
+A diferencia del tres en raya tradicional donde los jugadores simplemente colocan X y O, este juego requiere que los jugadores demuestren su conocimiento de fútbol.
 
- El juego tiene ganador si se consigue realizar una línea recta de símbolos. 
+Cada celda del tablero representa la intersección de dos categorías (por ejemplo, un equipo y una posición), y los jugadores deben introducir el nombre de un futbolista real que coincida con ambas categorías para reclamar la casilla.
 
-3.	FUNCIONAMIENTO 
-En nuestro caso particular, no es tan sencillo como marcar la casilla en cada turno, en la parte superior y la parte izquierda habrá unas categorías y para que el usuario pueda marcar esa casilla con su símbolo, tendrá que acertar y cumplir ambas categorías que están marcadas.  Es decir, si el usuario quiere marcar la posición (1,1), tendría que decir un jugador que sea POR y que haya estado o pertenezca al VALENCIA. En ese caso, el jugador pintará su marca. Las tres categorías superiores van ligadas al igual que las laterales, es decir, si en la parte superior de manera aleatoria sale un equipo, los tres serán del mismo tipo, tal y como se puede ver en el ejemplo superior. En ese caso cruzan dos categorías: equipo VS posiciones. En ese caso las categorías verticales son los tres equipos y las horizontales son las tres posiciones. 
-Esas categorías podrán ser: 
-− Un Equipo (El jugador tiene que pertenecer o haber pertenecido a ese equipo) 
-− Un País (El jugador tiene que tener esa nacionalidad) 
-− Una Posición (El jugador tiene que jugar en esa posición del campo) 
-− Una Edad (El jugador tiene que tener una edad mayor/menor que la estipulada) 
+### 🧩 Mecánicas de Juego Principales
 
-Todos los huecos del tablero van a ser botones de modo que, al presionarlos, se compruebe un campo de texto o mejor dicho un “TextField” donde se cogerá ese texto que el usuario haya metido y se comprobará a través de una consulta si el texto introducido, coincide con alguno de los valores que una consulta a la base de datos nos devuelve. 
+* **🔲 Tablero de 3x3** con combinaciones únicas.
+* **📚 Categorías horizontales y verticales** (equipos, posiciones, países, dorsales, edades).
+* **🧠 Validación de futbolistas reales** usando **MongoDB** con más de **276 registros**.
+* **🏆 Reglas clásicas de victoria** del tres en raya + detección de empate/atasco.
 
-En resumen, el usuario introducirá un nombre en el campo de texto y al pulsar uno de los botones del tablero, se realice una consulta donde coja la categoría superior y lateral y si el nombre está en el resultado, pondrá su marca. 
-Una vez que ponga su marca, se deberá comprobar si hay alguna combinación de marcas seguidas que consigan obtener ganador, si no es así, se seguirá con el juego, pero ahora cambiaremos de turno y le tocará al siguiente jugador. 
+---
 
--	Ejemplo:
-El usuario quiere introducir el nombre de la casilla (2,2), tal y como se marca en el dibujo En ese caso introduciría el nombre en el campo de texto: “Miguel Gutiérrez” y el programa hará una consulta a la base de datos. 
+## 🏗️ Arquitectura del Sistema
 
-Se tendrá que coger la categoría superior: GIRONA, darse cuenta que es un equipo y coger la categoría lateral: LI y darse cuenta que es una posición. Para ello se tendrá que controlar los posibles valores aleatorios que pueden salir en esas categorías previamente… 
+```mermaid
+graph TD
+  A[Sistemas Externos] --> B[Capa de Importación de Datos]
+  B --> C[Capa de Acceso a Datos]
+  C --> D[Capa de Lógica del Juego]
+  D --> E[Capa de Interfaz de Usuario]
+  ```
 
-Una vez que sabemos ambas categorías hay que hacer un filtro y realizar una consulta a la base de datos y sacar: “Todos los nombres de los jugadores que tengan en su lista de equipos al GIRONA y que en su lista de posiciones también tengan LI…” ese resultado de la consulta se devolverá en forma de lista de nombres y si el texto que ha introducido el usuario es exactamente uno de ellos, pintará y cambiará el fondo del botón con la imagen o marca del usuario que esté jugando en ese momento.
+  ### 🧱 Componentes Clave
 
-Como recomendación, sería recomendable que al usuario le ofrezcas ayuda y que de alguna forma se pueda autocompletar ese nombre en función con los nombres que tiene guardados en la base de datos, pero eso es un valor añadido, no es un requisito obligatorio. 
-Se debe tener un sitio reservado en la interfaz para marcar si es un acierto o un fallo, ya que en caso de acertar cambiará el fondo del botón y se inhabilitará, pero en caso de error… se debe marcar de alguna manera. 
+* **🖼️ FutbolEnRaya** (Interfaz gráfica y lógica del juego)
+    * **UI**: `JButton[3][3]`, `JTextField`, `JLabel[]`
+    * **Estado**: `String[][] tablero`, `String turnoActual`, `Set jugadoresUsados`
+    * **Categorías**: `seleccionarCategoriasParaTableroJugable()`
+    * **Validación**: `manejarClick()`, `quedanOpcionesParaJugadorActual()`
 
-Acierte o falle el campo de texto tiene que borrarse para dejarlo limpio para el siguiente intento. 
+* **🗄️ TicTacToeDB** (Base de datos)
+    * `precargarJugadores()`
+    * `getPlayersByCategories()`
 
-También habrá que reservar una parte de la interfaz para marcar si se ha ganado el juego y en caso de que así sea, poder reiniciar una nueva partida, para ello tendría que aparecer en ese caso y solo en ese caso un botón de reinicio. Cuando este sea pulsado, se tendrán que reiniciar y elegir nuevas categorías y limpiar el tablero de marcas. 
+* **👤 Jugador** (Modelo)
+    * `nombre`
+    * `clubs`: `List<String>`
 
-Es recomendable que también en una parte se establezca una tabla de puntuaciones donde tengamos dos registros numéricos, donde se vaya incrementando las partidas ganadas de los competidores actuales. 
+* **📄 JsonManipulator**
+    * Importación desde archivo local `players.json`
 
-4.	INTERFAZ DE USUARIO
-En este caso, el diseño de la interfaz será libre, pero tendrá que cumplir con la funcionalidad establecida. Un ejemplo de ello es el diseño que se propone en la parte superior. 
+* **☁️ MongoDBImporter**
+    * Importación desde **MongoDB Atlas**
 
-Estos dos últimos son dos ejemplos de aplicaciones web reales con un funcionamiento similar. 
+---
 
-Estas dos soluciones son más profesionales porque almacenan imágenes en sus bases de datos, en nuestro caso no es un requisito obligatorio, pero si es opcional y recomendable, de hecho, es un aspecto a valorar en la práctica y como tal, tendrá un peso en la calificación de la práctica.
+## 🔁 Flujo del Juego y Validación de Movimientos
+
+### 🔄 Inicialización
+
+1.  `precargarJugadores()`: Precarga todos los jugadores.
+2.  Se cargan los datos desde **MongoDB** (`futbol_en_raya.jugadores`).
+3.  `seleccionarCategoriasParaTableroJugable()`: Selección aleatoria de categorías válidas.
+4.  Se llena la matriz `jugadoresDisponiblesPorCasilla[3][3]`.
+
+### 🎯 Movimiento del Jugador
+
+1.  El jugador hace clic en una celda y escribe un nombre.
+2.  Se verifica si ya fue usado:
+    * ✅ **Válido**: marca celda, cambia turno, evalúa victoria.
+    * ❌ **Inválido o repetido**: penalización, cambio de turno.
+3.  Se detecta si hay empate o "juego atascado".
+
+---
+
+## 🧮 Sistema de Categorías y Generación del Tablero
+
+### Tipos de Categorías
+
+* **Horizontales**: `PAIS`, `CLUB`
+* **Verticales**: `POSICION`, `DORSAL`, `PAIS`, `EDAD_RANGO`
+
+### 🔧 Algoritmo de Selección
+
+1.  Hasta **1000 intentos** para generar tablero jugable.
+2.  Se eligen las **3 categorías más frecuentes** (filas y columnas).
+3.  Cada celda combina horizontal + vertical.
+4.  Se valida que cada celda tenga al menos un jugador.
+
+---
+
+## 🧰 Pila Tecnológica y Dependencias
+
+| 🔧 Componente   | 🛠️ Tecnología        | 🧾 Versión  | 📌 Propósito                      |
+| :-------------- | :------------------- | :---------- | :-------------------------------- |
+| Plataforma      | Java SE              | 21          | Base del proyecto                 |
+| UI              | Swing                | -           | Interfaz gráfica                  |
+| Base de Datos   | MongoDB              | 5.4.0       | Jugadores y categorías            |
+| Driver MongoDB  | MongoDB Sync Driver  | 5.4.0       | Conexión con MongoDB              |
+| Formato Datos   | JSON                 | 20240303    | Entrada/salida de datos           |
+| Interno MongoDB | BSON                 | 5.4.0       | Almacenamiento binario            |
+
+### 📦 Librerías JAR
+
+* `bson-5.4.0.jar`
+* `mongodb-driver-core-5.4.0.jar`
+* `mongodb-driver-sync-5.4.0.jar`
+* `json-20240303.jar`
+
+---
+
+## 🧬 Arquitectura de Datos
+
+### Flujo de Datos
+
+1.  **Origen**: Transfermarkt.es (manual)
+2.  **Conversión**: Archivo local `players.json`
+3.  **Importación**:
+    * `JsonManipulator` → local
+    * `MongoDBImporter` → Atlas (nube)
+4.  **Carga**: Colección `futbol_en_raya.jugadores`
+5.  **Caché**: Datos cargados en memoria vía `TicTacToeDB`
+
+### 🗃️ Estructura del Archivo `players.json`
+
+```json
+{
+  "nombre": "String",
+  "nacionalidad": "String",
+  "clubs": ["List<String>"],
+  "posicion": "String",
+  "numero_camiseta": "String",
+  "edad": Integer
+}
+```
+
+---
+
+## 🚀 Puntos de Entrada y Clases Principales
+
+| 📦 Clase          | 💡 Propósito                       | 🔑 Métodos Clave                                |
+| :---------------- | :--------------------------------- | :---------------------------------------------- |
+| `FutbolEnRaya`    | Aplicación principal y UI          | `main()`, `manejarClick()`, `iniciarNuevaPartida()` |
+| `TicTacToeDB`     | Conexión y operaciones en MongoDB  | `precargarJugadores()`, `getPlayersByCategories()` |
+| `JsonManipulator` | Importar desde base de datos local | Desde `players.json`                            |
+| `MongoDBImporter` | Importar hacia la nube (MongoDB Atlas) | Cargar JSON a MongoDB                           |
+
+### ▶️ Inicio de la Aplicación
+
+La ejecución comienza desde:
+
+```java
+FutbolEnRaya.main()
