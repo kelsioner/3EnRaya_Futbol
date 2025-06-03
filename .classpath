@@ -11,5 +11,9 @@
 	<classpathentry kind="lib" path="C:/Users/kelsi/git/3EnRaya_Futbol/lib/json-20240303.jar"/>
 	<classpathentry kind="lib" path="C:/Users/kelsi/git/3EnRaya_Futbol/lib/mongodb-driver-core-5.4.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/kelsi/git/3EnRaya_Futbol/lib/mongodb-driver-sync-5.4.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/arroy/Downloads/Carpeta .jar archivos mongo/mongodb-driver-core-4.10.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/arroy/Downloads/Carpeta .jar archivos mongo/mongodb-driver-sync-4.10.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/arroy/Downloads/Carpeta .jar archivos mongo/json-20240303.jar"/>
+	<classpathentry kind="lib" path="C:/Users/arroy/Downloads/Carpeta .jar archivos mongo/bson-4.10.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
